@@ -1,7 +1,7 @@
 const tintColorLight = "#005EA6"; // MI Electric Royal Blue
 const tintColorDark = "#FFD700";  // Vibrant Laser Gold
 const primary = "#E6B800";        // Deep Royal Blue (Main Brand Color)
-const secondary = "#004B87";      // Metallic Gold Accent
+const secondary = "#000000";      // Metallic Gold Accent
 
 export const Colors = {
     light: {
