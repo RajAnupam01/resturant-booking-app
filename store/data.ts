@@ -1,149 +1,308 @@
 
 export interface Restaurant {
-  id: string; 
+  id:string,
   name: string;
   seats: number;
-  imageUrl: string;
+  image: string;
   address: string;
-  openingTime: string;
-  closingTime: string;
+  opening: string;
+  closing: string;
 }
-
-
-export const DELHI_RESTAURANT_DATA: Restaurant[] = [
+ const data: Restaurant[] = [
   {
-    id: "1",
+
     name: "Indian Accent",
     seats: 55,
-    imageUrl: "https://images.travelandleisureasia.com/wp-content/uploads/sites/2/2025/05/02141004/aesthetic-rest-hero.jpeg?tr=w-1200,q-60",
+    image: "https://images.travelandleisureasia.com/wp-content/uploads/sites/2/2025/05/02141004/aesthetic-rest-hero.jpeg?tr=w-1200,q-60",
     address: "The Lodhi, Lodhi Road, New Delhi 110003",
-    openingTime: "12:00 PM",
-    closingTime: "12:00 AM"
+    opening: "11:30",
+    closing: "23:00",
   },
   {
-    id: "2",
+
     name: "Bukhara",
     seats: 90,
-    imageUrl: "https://images.surferseo.art/7d5164fa-7a4d-49bd-a811-307c98f79698.png",
+    image: "https://images.surferseo.art/7d5164fa-7a4d-49bd-a811-307c98f79698.png",
     address: "ITC Maurya, Diplomatic Enclave, Chanakyapuri, New Delhi 110021",
-    openingTime: "12:30 PM",
-    closingTime: "11:45 PM"
+    opening: "10:00",
+    closing: "22:00",
   },
   {
-    id: "3",
+
     name: "Karim's",
     seats: 70,
-    imageUrl: "https://qul.imgix.net/5e5f95f0-666a-46a4-994f-19c21ee35724/203795_landscape.jpg",
+    image: "https://images.unsplash.com/photo-1592861956120-e524fc739696?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8cmVzdGF1cmFudHN8ZW58MHx8MHx8fDA%3D",
     address: "Gali Kababian, Near Jama Masjid, Old Delhi 110006",
-    openingTime: "09:00 AM",
-    closingTime: "12:30 AM"
+    opening: "11:00",
+    closing: "00:00",
   },
   {
-    id: "4",
+
     name: "Rajinder Da Dhaba",
     seats: 120,
-    imageUrl: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/04/5a/f5/4f/fine-dine-istanbul.jpg?w=900&h=-1&s=1",
+    image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/04/5a/f5/4f/fine-dine-istanbul.jpg?w=900&h=-1&s=1",
     address: "AB-14B, Safdarjung Enclave Market, New Delhi 110029",
-    openingTime: "12:00 PM",
-    closingTime: "11:00 PM"
+    opening: "09:00",
+    closing: "23:30",
   },
   {
-    id: "5",
+
     name: "Olive Bar & Kitchen",
     seats: 65,
-    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhCVOtSC9NZ0NskbTp7nRwmYrddXekw623U9EadOGjdCo17B0_q4k_mKLl&s=10",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhCVOtSC9NZ0NskbTp7nRwmYrddXekw623U9EadOGjdCo17B0_q4k_mKLl&s=10",
     address: "One Style Mile, Kalka Das Marg, Mehrauli, New Delhi 110030",
-    openingTime: "12:30 PM",
-    closingTime: "12:00 AM"
+    opening: "10:30",
+    closing: "22:30",
   },
   {
-    id: "6",
+
     name: "Kake Da Hotel",
     seats: 40,
-    imageUrl: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500",
+    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500",
     address: "Municipal Market, Connaught Place, New Delhi 110001",
-    openingTime: "12:00 PM",
-    closingTime: "12:00 AM"
+    opening: "11:00",
+    closing: "23:00",
   },
   {
-    id: "7",
+
     name: "Yum Yum Cha",
     seats: 35,
-    imageUrl: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=500",
+    image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=500",
     address: "69, First Floor, Khan Market, New Delhi 110003",
-    openingTime: "12:00 PM",
-    closingTime: "11:00 PM"
+    opening: "08:30",
+    closing: "21:30",
   },
   {
-    id: "8",
+
     name: "Diggin",
     seats: 50,
-    imageUrl: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=500",
+    image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=500",
     address: "Chanakyapuri Santushti Shopping Complex, New Delhi 110021",
-    openingTime: "11:30 AM",
-    closingTime: "11:00 PM"
+    opening: "12:00",
+    closing: "00:30",
   },
   {
-    id: "9",
+
     name: "Moti Mahal",
     seats: 80,
-    imageUrl: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500",
+    image: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500",
     address: "Netaji Subhash Marg, Daryaganj, New Delhi 110002",
-    openingTime: "11:00 AM",
-    closingTime: "12:00 AM"
+    opening: "12:00",
+    closing: "00:30",
   },
   {
-    id: "10",
+
     name: "Gulati Restaurant",
     seats: 75,
-    imageUrl: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500",
+    image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500",
     address: "6, Pandara Road Market, New Delhi 110003",
-    openingTime: "12:00 PM",
-    closingTime: "12:00 AM"
+    opening: "10:00",
+    closing: "22:00",
   },
   {
-    id: "11",
+
     name: "Carnatic Cafe",
     seats: 30,
-    imageUrl: "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=500",
+    image: "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=500",
     address: "M Block Market, Greater Kailash 2, New Delhi 110048",
-    openingTime: "09:00 AM",
-    closingTime: "10:30 PM"
+    opening: "11:30",
+    closing: "23:00",
   },
   {
-    id: "12",
+
     name: "Cafe Lota",
     seats: 45,
-    imageUrl: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=500",
+    image: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=500",
     address: "National Crafts Museum, Bhairon Marg, Pragati Maidan, New Delhi 110001",
-    openingTime: "12:00 PM",
-    closingTime: "09:30 PM"
+    opening: "09:30",
+    closing: "22:00",
   },
-  {
-    id: "13",
-    name: "Kwality Restaurant",
-    seats: 60,
-    imageUrl: "https://images.unsplash.com/photo-1534080391025-097d43bc11d2?w=500",
-    address: "Regal Building, Connaught Place, New Delhi 110001",
-    openingTime: "12:00 PM",
-    closingTime: "11:00 PM"
-  },
-  {
-    id: "14",
-    name: "Wenger's",
-    seats: 0, 
-    imageUrl: "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=500",
-    address: "A Block, Connaught Place, New Delhi 110001",
-    openingTime: "10:45 AM",
-    closingTime: "06:30 PM"
-  },
-  {
-    id: "15",
-    name: "Juggernaut",
-    seats: 85,
-    imageUrl: "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?w=500",
-    address: "HS16, Main Market, Kailash Colony, New Delhi 110048",
-    openingTime: "06:00 AM",
-    closingTime: "11:00 PM"
-  }
 ];
+
+const carouselImages = [
+  {
+    images: [
+      "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1581384/pexels-photo-1581384.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/2253643/pexels-photo-2253643.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    ],
+    res_id: "/restaurants/restaurant_1",
+  },
+  {
+    images: [
+      "https://images.pexels.com/photos/761854/pexels-photo-761854.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1307698/pexels-photo-1307698.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/541216/pexels-photo-541216.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/776538/pexels-photo-776538.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1449773/pexels-photo-1449773.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1581554/pexels-photo-1581554.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    ],
+    res_id: "/restaurants/restaurant_2",
+  },
+  {
+    images: [
+      "https://images.pexels.com/photos/914388/pexels-photo-914388.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/67468/pexels-photo-67468.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/15638789/pexels-photo-15638789.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=170.625&fit=crop&h=276.25",
+      "https://images.pexels.com/photos/8630151/pexels-photo-8630151.jpeg?auto=compress&cs=tinysrgb&h=138.125&fit=crop&w=154.375&dpr=1",
+      "https://images.pexels.com/photos/3656787/pexels-photo-3656787.jpeg?auto=compress&cs=tinysrgb&h=138.125&fit=crop&w=154.375&dpr=1",
+      "https://images.pexels.com/photos/696218/pexels-photo-696218.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    ],
+    res_id: "/restaurants/restaurant_3",
+  },
+  {
+    images: [
+      "https://images.pexels.com/photos/1058277/pexels-photo-1058277.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/262047/pexels-photo-262047.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/784633/pexels-photo-784633.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/744780/pexels-photo-744780.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1579739/pexels-photo-1579739.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    ],
+    res_id: "/restaurants/restaurant_4",
+  },
+  {
+    images: [
+      "https://images.pexels.com/photos/735869/pexels-photo-735869.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1819669/pexels-photo-1819669.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1395967/pexels-photo-1395967.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    ],
+    res_id: "/restaurants/restaurant_5",
+  },
+  {
+    images: [
+      "https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1581384/pexels-photo-1581384.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/2253643/pexels-photo-2253643.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/761854/pexels-photo-761854.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1307698/pexels-photo-1307698.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/541216/pexels-photo-541216.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    ],
+    res_id: "/restaurants/restaurant_6",
+  },
+  {
+    images: [
+      "https://images.pexels.com/photos/776538/pexels-photo-776538.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1449773/pexels-photo-1449773.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1581554/pexels-photo-1581554.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/914388/pexels-photo-914388.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/67468/pexels-photo-67468.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/15638789/pexels-photo-15638789.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=236.25&fit=crop&h=382.5",
+    ],
+    res_id: "/restaurants/restaurant_7",
+  },
+  {
+    images: [
+      "https://images.pexels.com/photos/8630151/pexels-photo-8630151.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/3656787/pexels-photo-3656787.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/696218/pexels-photo-696218.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1058277/pexels-photo-1058277.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/262047/pexels-photo-262047.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    ],
+    res_id: "/restaurants/restaurant_8",
+  },
+  {
+    images: [
+      "https://images.pexels.com/photos/784633/pexels-photo-784633.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/744780/pexels-photo-744780.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1579739/pexels-photo-1579739.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/735869/pexels-photo-735869.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1819669/pexels-photo-1819669.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1395967/pexels-photo-1395967.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    ],
+    res_id: "/restaurants/restaurant_9",
+  },
+  {
+    images: [
+      "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1581384/pexels-photo-1581384.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/2253643/pexels-photo-2253643.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    ],
+    res_id: "/restaurants/restaurant_10",
+  },
+  {
+    images: [
+      "https://images.pexels.com/photos/761854/pexels-photo-761854.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1307698/pexels-photo-1307698.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/541216/pexels-photo-541216.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/776538/pexels-photo-776538.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1449773/pexels-photo-1449773.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/1581554/pexels-photo-1581554.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    ],
+    res_id: "/restaurants/restaurant_11",
+  },
+  {
+    images: [
+      "https://images.pexels.com/photos/914388/pexels-photo-914388.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/67468/pexels-photo-67468.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/15638789/pexels-photo-15638789.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/8630151/pexels-photo-8630151.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/3656787/pexels-photo-3656787.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+      "https://images.pexels.com/photos/696218/pexels-photo-696218.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    ],
+    res_id: "/restaurants/restaurant_12",
+  },
+];
+
+const slots = [
+  {
+    res_id: "/restaurants/restaurant_1",
+    slot: ["11:30", "13:30", "15:30", "17:30", "19:30", "21:30"],
+  },
+  {
+    res_id: "/restaurants/restaurant_2",
+    slot: ["10:00", "12:00", "14:00", "16:00", "18:00", "20:00"],
+  },
+  {
+    res_id: "/restaurants/restaurant_3",
+    slot: ["11:00", "13:00", "15:00", "17:00", "19:00", "21:00", "23:00"],
+  },
+  {
+    ref_id: "/restaurants/restaurant_4",
+    slot: ["09:00","11:00","13:00","15:00","17:00","19:00","21:00","23:00"],
+  },
+  {
+    res_id: "/restaurants/restaurant_5",
+    slot: ["10:30", "12:30", "14:30", "16:30", "18:30", "20:30"],
+  },
+  {
+    res_id: "/restaurants/restaurant_6",
+    slot: ["11:00", "13:00", "15:00", "17:00", "19:00", "21:00"],
+  },
+  {
+    ref_id: "/restaurants/restaurant_7",
+    slot: ["08:30", "10:30", "12:30", "14:30", "16:30", "18:30", "20:30"],
+  },
+  {
+    res_id: "/restaurants/restaurant_8",
+    slot: ["12:00", "14:00", "16:00", "18:00", "20:00", "22:00"],
+  },
+  {
+    res_id: "/restaurants/restaurant_9",
+    slot: ["10:00", "12:00", "14:00", "16:00", "18:00", "20:00"],
+  },
+  {
+    res_id: "/restaurants/restaurant_10",
+    slot: ["11:30", "13:30", "15:30", "17:30", "19:30", "21:30"],
+  },
+  {
+    res_id: "/restaurants/restaurant_11",
+    slot: ["09:30", "11:30", "13:30", "15:30", "17:30", "19:30"],
+  },
+  {
+    res_id: "/restaurants/restaurant_12",
+    slot: ["11:00", "13:00", "15:00", "17:00", "19:00", "21:00", "23:00"],
+  },
+];
+
+export {data,carouselImages,slots}
