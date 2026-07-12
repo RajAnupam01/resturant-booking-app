@@ -1,10 +1,11 @@
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { signinSchema, signinFormData } from "../../validations/authSchema"
-import { Colors } from "@/constants/Color";
 import { router } from "expo-router";
-import { Image, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View, ActivityIndicator } from "react-native";
+import {  ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import {auth} from "../../config/firebaseConfig"
 
 const Signin = () => {
   const {
@@ -21,18 +22,27 @@ const Signin = () => {
 
   const onSubmit = async (data: signinFormData) => {
     try {
-      console.log("Validation signin payload", data)
-    } catch (error) {
-      console.error("Submission error", error)
+      await signInWithEmailAndPassword(auth, data.email, data.password);
+      router.replace("/(drawer)/(tabs)/home")
+    } catch (error: any) {
+      let errorMessage = "Something went wrong. Please try again.";
+
+      if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+        errorMessage = "Invalid email or password.";
+      } else if (error.code === 'auth/too-many-requests') {
+        errorMessage = "Too many failed attempts. Please try again later.";
+      }
+      console.error("Login error:", error);
+      alert(errorMessage);
     }
   }
 
   return (
-    // Updated background wrapper to a clean deep tone matching your app theme
+
     <SafeAreaView style={{ flex: 1, backgroundColor: '#090A0A' }}>
       <StatusBar barStyle="light-content" backgroundColor="#090A0A" />
-      
-      <ScrollView 
+
+      <ScrollView
         contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
         showsVerticalScrollIndicator={false}
       >
@@ -52,9 +62,8 @@ const Signin = () => {
             name="email"
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                className={`bg-black/40 border p-3.5 rounded-xl text-white mb-1 text-base ${
-                  errors.email ? 'border-red-500/70' : 'border-gray-800 focus:border-gray-600'
-                }`}
+                className={`bg-black/40 border p-3.5 rounded-xl text-white mb-1 text-base ${errors.email ? 'border-red-500/70' : 'border-gray-800 focus:border-gray-600'
+                  }`}
                 placeholder="name@example.com"
                 placeholderTextColor="#64748B"
                 onBlur={onBlur}
@@ -78,9 +87,8 @@ const Signin = () => {
               name="password"
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  className={`bg-black/40 border p-3.5 rounded-xl text-white mb-1 text-base ${
-                    errors.password ? 'border-red-500/70' : 'border-gray-800 focus:border-gray-600'
-                  }`}
+                  className={`bg-black/40 border p-3.5 rounded-xl text-white mb-1 text-base ${errors.password ? 'border-red-500/70' : 'border-gray-800 focus:border-gray-600'
+                    }`}
                   placeholder="Enter your password"
                   placeholderTextColor="#64748B"
                   onBlur={onBlur}
@@ -100,9 +108,8 @@ const Signin = () => {
 
           {/* SUBMIT BUTTON */}
           <TouchableOpacity
-            className={`mt-4 p-4 rounded-xl items-center flex-row justify-center shadow-lg active:opacity-90 ${
-              isSubmitting ? 'bg-gray-800' : 'bg-amber-400'
-            }`}
+            className={`mt-4 p-4 rounded-xl items-center flex-row justify-center shadow-lg active:opacity-90 ${isSubmitting ? 'bg-gray-800' : 'bg-amber-400'
+              }`}
             onPress={handleSubmit(onSubmit)}
             disabled={isSubmitting}
           >

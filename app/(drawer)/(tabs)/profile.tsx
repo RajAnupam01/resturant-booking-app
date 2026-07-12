@@ -2,23 +2,21 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { useUser } from '@/context/userContext';
 
-
-const History = () => {
+const Profile = () => {
   const { isGuest } = useUser();
-
+  
   if (isGuest) {
     return (
       <View>
-        <Text>Please sign in to view your booking history.</Text>
+        <Text>Please sign in to access your profile.</Text>
       </View>
     );
   }
-  
   return (
     <View>
-      <Text>History</Text>
+      <Text>Setting</Text>
     </View>
   )
 }
 
-export default History
+export default Profile

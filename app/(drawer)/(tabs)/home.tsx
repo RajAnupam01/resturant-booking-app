@@ -3,14 +3,16 @@ import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/constants/Color';
 import { Ionicons, Octicons } from '@expo/vector-icons';
-import { useNavigation, useRouter } from 'expo-router'; 
-import AsyncStorage from '@react-native-async-storage/async-storage'; 
+import { useNavigation, useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DrawerActions } from '@react-navigation/native';
 import { Restaurant } from "../../../store/data"
 import { collection, getDocs, query } from 'firebase/firestore';
-import { db } from "../../../config/firebaseConfig"
+import { auth, db } from "../../../config/firebaseConfig"
+import { useUser } from '@/context/userContext';
 
 const Home = () => {
+  const { authUser } = useUser();
   const [restaurant, setRestaurant] = useState<Restaurant[]>([]);
   const [loading, setLoading] = useState(true);
   const [recentlyViewed, setRecentlyViewed] = useState<Restaurant[]>([]);
@@ -30,17 +32,17 @@ const Home = () => {
       console.error("Error fetching data: ", error);
     } finally {
       setLoading(false);
-    } 
+    }
   };
 
-  const loadRecentlyViewed = async()=>{
+  const loadRecentlyViewed = async () => {
     try {
-      const storedHistory = await AsyncStorage.getItem('recently_viewed')
-      if(storedHistory){
+      const storedHistory = await AsyncStorage.getItem(`recently_viewed_${authUser?.uid}`)
+      if (storedHistory) {
         setRecentlyViewed(JSON.parse(storedHistory))
       }
     } catch (error) {
-      console.log("Error loading History",error)
+      console.log("Error loading History", error)
     }
   }
 
@@ -50,19 +52,21 @@ const Home = () => {
   }, []);
 
   const handleRestaurantClick = async (item: Restaurant) => {
-    try {
-      const filtered = recentlyViewed.filter(res => res.id !== item.id);
-      const updatedHistory = [item, ...filtered].slice(0, 5);
-      setRecentlyViewed(updatedHistory); 
-      await AsyncStorage.setItem('recently_viewed', JSON.stringify(updatedHistory));
-    } catch (error) {
-      console.log("Error saving History", error);
-    }
-    
     router.push({
       pathname: '/resturant/[id]',
       params: { id: item.id }
     });
+    try {
+      const filtered = recentlyViewed.filter(res => res.id !== item.id);
+      const updatedHistory = [item, ...filtered].slice(0, 5);
+      setRecentlyViewed(updatedHistory);
+      await AsyncStorage.setItem(
+        `recently_viewed_${authUser?.uid}`,
+        JSON.stringify(updatedHistory)
+      );
+    } catch (error) {
+      console.log("Error saving History", error);
+    }
   };
 
   const renderRestaurantItem = ({ item }: { item: any }) => {
@@ -109,7 +113,7 @@ const Home = () => {
   const renderRecentlyViewedItem = ({ item }: { item: Restaurant }) => {
     return (
       <TouchableOpacity
-  
+
         className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden flex-row p-2 w-72 mr-4 mb-4 items-center"
         onPress={() => handleRestaurantClick(item)}
       >
@@ -178,7 +182,8 @@ const Home = () => {
           keyExtractor={(item, index) => loading ? `skeleton-${index}` : item.id}
         />
 
-        {recentlyViewed.length > 0 &&
+        {
+          authUser && restaurant.length > 0 && recentlyViewed.length > 0 &&
           <>
             <View className="p-4">
               <Text className="text-white text-3xl font-semibold">Recently Viewed</Text>
@@ -194,6 +199,7 @@ const Home = () => {
             />
           </>
         }
+
 
       </ScrollView>
     </SafeAreaView>

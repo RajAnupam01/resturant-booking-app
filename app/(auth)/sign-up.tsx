@@ -1,10 +1,12 @@
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { signupSchema, signupFormData } from "../../validations/authSchema"
-import { Colors } from "@/constants/Color";
 import { router } from "expo-router";
-import { Image, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View, ActivityIndicator } from "react-native";
+import { ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { createUserWithEmailAndPassword, } from "firebase/auth"
+import {auth} from "../../config/firebaseConfig"
+import { doc, getFirestore, setDoc } from "firebase/firestore";
 
 const Signup = () => {
   const {
@@ -21,25 +23,48 @@ const Signup = () => {
     }
   })
 
+  const db = getFirestore()
+
   const onSubmit = async (data: signupFormData) => {
     try {
-      console.log("Validation signup payload", data)
-    } catch (error) {
-      console.error("Submission error", error)
+      const userCredentials = await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      )
+      const user = userCredentials.user;
+
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        createdAt: new Date().toISOString(),
+      })
+      router.replace("/(drawer)/(tabs)/home")
+    } catch (error: any) {
+      if (error.code === 'auth/email-already-in-use') {
+        alert('That email address is already in use!');
+      } else if (error.code === 'auth/invalid-email') {
+        alert('That email address is invalid!');
+      } else {
+        console.error("Submission error:", error);
+        alert(error.message || "Something went wrong. Please try again.");
+      }
     }
   }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#090A0A' }}>
       <StatusBar barStyle="light-content" backgroundColor="#090A0A" />
-      
-      <ScrollView 
+
+      <ScrollView
         contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', paddingVertical: 24 }}
         showsVerticalScrollIndicator={false}
       >
         {/* Top Header Branding Section */}
         <View className="items-center mb-2">
-      
+
           <Text className="text-2xl text-white font-bold mt-1">Let's get started</Text>
           <Text className="text-gray-400 text-sm mt-1 font-medium">Create an account to start booking tables</Text>
         </View>
@@ -54,9 +79,8 @@ const Signup = () => {
             name="name"
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                className={`bg-black/40 border p-3.5 rounded-xl text-white mb-1 text-base ${
-                  errors.name ? 'border-red-500/70' : 'border-gray-800 focus:border-gray-600'
-                }`}
+                className={`bg-black/40 border p-3.5 rounded-xl text-white mb-1 text-base ${errors.name ? 'border-red-500/70' : 'border-gray-800 focus:border-gray-600'
+                  }`}
                 placeholder="John Doe"
                 placeholderTextColor="#64748B"
                 onBlur={onBlur}
@@ -77,9 +101,8 @@ const Signup = () => {
             name="email"
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                className={`bg-black/40 border p-3.5 rounded-xl text-white mb-1 text-base ${
-                  errors.email ? 'border-red-500/70' : 'border-gray-800 focus:border-gray-600'
-                }`}
+                className={`bg-black/40 border p-3.5 rounded-xl text-white mb-1 text-base ${errors.email ? 'border-red-500/70' : 'border-gray-800 focus:border-gray-600'
+                  }`}
                 placeholder="name@example.com"
                 placeholderTextColor="#64748B"
                 onBlur={onBlur}
@@ -102,9 +125,8 @@ const Signup = () => {
             name="phone"
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                className={`bg-black/40 border p-3.5 rounded-xl text-white mb-1 text-base ${
-                  errors.phone ? 'border-red-500/70' : 'border-gray-800 focus:border-gray-600'
-                }`}
+                className={`bg-black/40 border p-3.5 rounded-xl text-white mb-1 text-base ${errors.phone ? 'border-red-500/70' : 'border-gray-800 focus:border-gray-600'
+                  }`}
                 placeholder="+1 234 567 890"
                 placeholderTextColor="#64748B"
                 onBlur={onBlur}
@@ -125,9 +147,8 @@ const Signup = () => {
             name="password"
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                className={`bg-black/40 border p-3.5 rounded-xl text-white mb-1 text-base ${
-                  errors.password ? 'border-red-500/70' : 'border-gray-800 focus:border-gray-600'
-                }`}
+                className={`bg-black/40 border p-3.5 rounded-xl text-white mb-1 text-base ${errors.password ? 'border-red-500/70' : 'border-gray-800 focus:border-gray-600'
+                  }`}
                 placeholder="Minimum 8 characters"
                 placeholderTextColor="#64748B"
                 onBlur={onBlur}
@@ -145,9 +166,8 @@ const Signup = () => {
 
           {/* SUBMIT BUTTON */}
           <TouchableOpacity
-            className={`mt-5 p-4 rounded-xl items-center flex-row justify-center shadow-lg active:opacity-90 ${
-              isSubmitting ? 'bg-gray-800' : 'bg-amber-400'
-            }`}
+            className={`mt-5 p-4 rounded-xl items-center flex-row justify-center shadow-lg active:opacity-90 ${isSubmitting ? 'bg-gray-800' : 'bg-amber-400'
+              }`}
             onPress={handleSubmit(onSubmit)}
             disabled={isSubmitting}
           >
