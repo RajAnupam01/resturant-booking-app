@@ -6,16 +6,19 @@ import { Ionicons, Octicons } from '@expo/vector-icons';
 import { useNavigation, useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DrawerActions } from '@react-navigation/native';
-import { Restaurant } from "../../../store/data"
+import { Restaurant, Discount, Cuisine } from "../../../store/data"
 import { collection, getDocs, query } from 'firebase/firestore';
-import { auth, db } from "../../../config/firebaseConfig"
+import { db } from "../../../config/firebaseConfig"
 import { useUser } from '@/context/userContext';
 
 const Home = () => {
   const { authUser } = useUser();
   const [restaurant, setRestaurant] = useState<Restaurant[]>([]);
+  const [discount, setDiscount] = useState<Discount[]>([])
+  const [cuisine, setCuisine] = useState<Cuisine[]>([])
   const [loading, setLoading] = useState(true);
   const [recentlyViewed, setRecentlyViewed] = useState<Restaurant[]>([]);
+
   const router = useRouter();
   const navigation = useNavigation();
 
@@ -35,6 +38,34 @@ const Home = () => {
     }
   };
 
+  const getDiscount = async () => {
+    try {
+      const q = query(collection(db, "discounts"));
+      const querySnapshot = await getDocs(q);
+      const fetchedDiscounts = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as Omit<Discount, 'id'>)
+      }))
+      setDiscount(fetchedDiscounts)
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+
+  const getCuisine = async () => {
+    try {
+      const q = query(collection(db, "cuisines"));
+      const querySnapshot = await getDocs(q);
+      const fetchedCuisines = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as Omit<Cuisine, 'id'>)
+      }))
+      setCuisine(fetchedCuisines)
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+
   const loadRecentlyViewed = async () => {
     try {
       const storedHistory = await AsyncStorage.getItem(`recently_viewed_${authUser?.uid}`)
@@ -47,8 +78,12 @@ const Home = () => {
   }
 
   useEffect(() => {
-    getRestaurants();
-    loadRecentlyViewed();
+    const initFetch = async () => {
+      setLoading(true);
+      await Promise.all([getRestaurants(), getDiscount(), getCuisine(), loadRecentlyViewed()]);
+      setLoading(false);
+    };
+    initFetch();
   }, []);
 
   const handleRestaurantClick = async (item: Restaurant) => {
@@ -72,8 +107,8 @@ const Home = () => {
   const renderRestaurantItem = ({ item }: { item: any }) => {
     if (loading) {
       return (
-        <View className="bg-gray-800 rounded-lg mb-4 mt-4 mr-4 ml-4 overflow-hidden w-64 h-64 opacity-40">
-          <View className="w-full h-44 bg-gray-700" />
+        <View className="bg-gray-800 rounded-xl mr-4 overflow-hidden w-64 h-64 opacity-40">
+          <View className="w-full h-40 bg-gray-700" />
           <View className="p-3">
             <View className="h-5 bg-gray-700 rounded w-3/4 mb-2" />
             <View className="h-3 bg-gray-700 rounded w-1/2 mb-2" />
@@ -87,22 +122,21 @@ const Home = () => {
 
     return (
       <TouchableOpacity
-        className="bg-white rounded-lg mb-4 mt-4 mr-4 ml-4 overflow-hidden shadow-md android:elevation-3 w-64"
+        className="bg-white rounded-xl mr-4 overflow-hidden shadow-md android:elevation-3 w-64"
         onPress={() => handleRestaurantClick(restaurantItem)}
       >
         <Image
           source={{ uri: restaurantItem.image }}
-          className="w-full h-44 object-cover"
+          className="w-full h-40 object-cover"
         />
-
         <View className="p-3">
-          <Text className="text-lg font-bold text-gray-900 mb-1">
+          <Text className="text-base font-bold text-gray-900 mb-1" numberOfLines={1}>
             {restaurantItem.name}
           </Text>
-          <Text className="text-sm text-gray-600 mb-1" numberOfLines={1}>
+          <Text className="text-xs text-gray-600 mb-1" numberOfLines={1}>
             {restaurantItem.address}
           </Text>
-          <Text className="text-xs text-gray-400">
+          <Text className="text-[11px] text-gray-400">
             Seats: {restaurantItem.seats} | Timing: {restaurantItem.opening} - {restaurantItem.closing}
           </Text>
         </View>
@@ -113,17 +147,15 @@ const Home = () => {
   const renderRecentlyViewedItem = ({ item }: { item: Restaurant }) => {
     return (
       <TouchableOpacity
-
-        className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden flex-row p-2 w-72 mr-4 mb-4 items-center"
+        className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden flex-row p-2 w-72 mr-4 items-center"
         onPress={() => handleRestaurantClick(item)}
       >
         <Image
           source={{ uri: item.image }}
-          className="w-20 h-20 rounded-lg object-cover"
+          className="w-16 h-16 rounded-lg object-cover"
         />
-
         <View className="flex-1 ml-3 justify-center">
-          <Text className="text-white text-base font-bold mb-0.5" numberOfLines={1}>
+          <Text className="text-white text-sm font-bold mb-0.5" numberOfLines={1}>
             {item.name}
           </Text>
           <Text className="text-gray-400 text-xs mb-1" numberOfLines={1}>
@@ -139,6 +171,36 @@ const Home = () => {
     );
   };
 
+  const renderDiscountItem = ({ item }: { item: Discount }) => {
+    return (
+      <View className="w-72 h-40 mr-4 rounded-xl overflow-hidden bg-gray-900 shadow-md">
+        <Image
+          source={{ uri: item.image }}
+          className="w-full h-full object-cover"
+        />
+      </View>
+    );
+  };
+
+  const renderCuisineItem = ({ item }: { item: Cuisine }) => {
+    return (
+      <View className="w-36 mr-4 items-center">
+        <View className="w-36 h-36 rounded-full overflow-hidden bg-gray-900 shadow-md">
+          <Image
+            source={{ uri: item.image }}
+            className="w-full h-full object-cover"
+          />
+        </View>
+        <Text
+          className="text-white text-sm font-medium mt-2 text-center w-full"
+          numberOfLines={1}
+        >
+          {item.title}
+        </Text>
+      </View>
+    );
+  };
+
   return (
     <SafeAreaView style={{ backgroundColor: Colors.SECONDARY, flex: 1 }} >
       <ScrollView
@@ -147,9 +209,10 @@ const Home = () => {
         bounces={false}
         overScrollMode="never"
       >
-        <View style={{ backgroundColor: Colors.SECONDARY }} className="pb-4 z-50">
-          <View className="flex items-center mt-4">
-            <View className="border border-gray-700 bg-gray-900 flex-row px-3 py-2 w-11/12 rounded-lg shadow-lg justify-between items-center">
+        {/* Navigation Bar */}
+        <View style={{ backgroundColor: Colors.SECONDARY }} className="pb-3 z-50">
+          <View className="flex items-center mt-3">
+            <View className="border border-gray-700 bg-gray-900 flex-row px-3 py-2 w-11/12 rounded-xl shadow-lg justify-between items-center">
               <Ionicons name="reorder-three" size={34} color="white" onPress={() =>
                 navigation.dispatch(DrawerActions.toggleDrawer())
               } />
@@ -158,20 +221,42 @@ const Home = () => {
           </View>
         </View>
 
-        <View className="w-full px-4 items-center">
+        {/* Welcome Banner */}
+        <View className="w-full px-4 items-center mb-2">
           <ImageBackground
-            className="h-52 w-full items-center justify-center overflow-hidden rounded-xl"
+            className="h-48 w-full items-center justify-center overflow-hidden rounded-xl"
             source={require("../../../assets/images/food.jpg")}>
             <View className="absolute inset-0 bg-black/60 items-center justify-center">
-              <Text className="text-white text-4xl font-extrabold">Welcome To TableIO</Text>
+              <Text className="text-white text-3xl font-extrabold">Welcome To TableIO</Text>
             </View>
           </ImageBackground>
         </View>
 
-        <View className="p-4">
-          <Text className="text-white text-3xl font-semibold">Our Resturant's</Text>
-        </View>
+        {/* Special Offers Section */}
+        {discount.length > 0 && (
+          <>
+            <View className="p-4 pt-4">
+              <Text className="text-white text-xl font-bold">Special Offers</Text>
+            </View>
+            <FlatList
+              data={discount}
+              renderItem={renderDiscountItem}
+              horizontal
+              pagingEnabled={false}
+              snapToInterval={304} // 288px (w-72) + 16px (mr-4)
+              decelerationRate="fast"
+              contentContainerStyle={{ paddingLeft: 16, paddingRight: 0 }}
+              showsHorizontalScrollIndicator={false}
+              nestedScrollEnabled={true}
+              keyExtractor={(item) => `discount-${item.id}`}
+            />
+          </>
+        )}
 
+        {/* Restaurants Section */}
+        <View className="p-4 pt-4">
+          <Text className="text-white text-xl font-bold">Our Restaurants</Text>
+        </View>
         <FlatList
           data={loading ? [1, 2, 3] : restaurant}
           renderItem={renderRestaurantItem}
@@ -182,25 +267,47 @@ const Home = () => {
           keyExtractor={(item, index) => loading ? `skeleton-${index}` : item.id}
         />
 
-        {
-          authUser && restaurant.length > 0 && recentlyViewed.length > 0 &&
+        {/* Cuisines Section */}
+        {cuisine.length > 0 && (
           <>
-            <View className="p-4">
-              <Text className="text-white text-3xl font-semibold">Recently Viewed</Text>
+            <View className="p-4 pt-4">
+              <Text className="text-white text-xl font-bold">Available Cuisines</Text>
+            </View>
+            <FlatList
+              data={cuisine}
+              renderItem={renderCuisineItem}
+              horizontal
+              pagingEnabled={false}
+              snapToInterval={160} // 144px (w-36) + 16px (mr-4)
+              decelerationRate="fast"
+              contentContainerStyle={{ paddingLeft: 16, paddingRight: 0 }}
+              showsHorizontalScrollIndicator={false}
+              nestedScrollEnabled={true}
+              keyExtractor={(item) => `cuisine-${item.id}`}
+            />
+          </>
+        )}
+
+        {/* Recently Viewed Section */}
+        {authUser && restaurant.length > 0 && recentlyViewed.length > 0 && (
+          <>
+            <View className="p-4 pt-4">
+              <Text className="text-white text-xl font-bold">Recently Viewed</Text>
             </View>
             <FlatList
               data={recentlyViewed}
               renderItem={renderRecentlyViewedItem}
               horizontal
-              contentContainerStyle={{ paddingLeft: 24, paddingRight: 0 }}
+              contentContainerStyle={{ paddingLeft: 16, paddingRight: 0 }}
               showsHorizontalScrollIndicator={false}
               nestedScrollEnabled={true}
               keyExtractor={(item) => `recent-${item.id}`}
             />
           </>
-        }
-
-
+        )}
+        
+        {/* Bottom spacer for nested ScrollView padding */}
+        <View className="h-8" />
       </ScrollView>
     </SafeAreaView>
   );

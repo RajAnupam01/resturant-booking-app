@@ -1,6 +1,6 @@
 
 export interface Restaurant {
-  id:string,
+  id: string,
   name: string;
   seats: number;
   image: string;
@@ -8,9 +8,17 @@ export interface Restaurant {
   opening: string;
   closing: string;
 }
- const data: Restaurant[] = [
+export interface Discount {
+  id: string,
+  image: string
+}
+export interface Cuisine {
+  id: string,
+  title: string,
+  image: string
+}
+const data: Restaurant[] = [
   {
-
     name: "Indian Accent",
     seats: 55,
     image: "https://images.travelandleisureasia.com/wp-content/uploads/sites/2/2025/05/02141004/aesthetic-rest-hero.jpeg?tr=w-1200,q-60",
@@ -269,7 +277,7 @@ const slots = [
   },
   {
     ref_id: "/restaurants/restaurant_4",
-    slot: ["09:00","11:00","13:00","15:00","17:00","19:00","21:00","23:00"],
+    slot: ["09:00", "11:00", "13:00", "15:00", "17:00", "19:00", "21:00", "23:00"],
   },
   {
     res_id: "/restaurants/restaurant_5",
@@ -305,4 +313,48 @@ const slots = [
   },
 ];
 
-export {data,carouselImages,slots}
+const discount = [
+  {
+    image: "https://img.magnific.com/premium-psd/restaurant-discount-gift-voucher-template-with-grilled-meat_25996-21519.jpg"
+  },
+  {
+    image: "https://www.shutterstock.com/image-photo/delicious-burger-50-discount-offer-260nw-2683528001.jpg"
+  },
+  {
+    image: "https://www.shutterstock.com/shutterstock/videos/1104537387/thumb/10.jpg?ip=x480"
+  },
+  {
+    image: "https://i.pinimg.com/736x/ab/ef/2c/abef2c8b159698d33d1f14b38ff8dfb5.jpg"
+  }
+]
+
+const cuisine = [
+  {
+    title: "Chinese",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Shanghai_Fried_Noodles%EF%BC%88%E4%B8%8A%E6%B5%B7%E7%82%92%E9%9D%A2%29.jpg/250px-Shanghai_Fried_Noodles%EF%BC%88%E4%B8%8A%E6%B5%B7%E7%82%92%E9%9D%A2%29.jpg"
+  },
+  {
+    title: "South Indian",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF3-yRg9A29R7Ko5rTa31zKPrGw5Q5V3VZ13vJ0X3zwlU236o-CUuQPNvz&s=10"
+  },
+  {
+    title: "North Indian",
+    image: "https://i.pinimg.com/736x/b0/37/cf/b037cf4b84a9f217b5576d07d4011f6a.jpg"
+  },
+  {
+    title: "Italian",
+    image: "https://www.foodandwine.com/thmb/fVmYbaQzXCz1Prx8VxrW9sMcjMU=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Braciole-FT-RECIPE1122-66acf49cef0e4390bec780945709e7f3.jpg"
+  },
+  {
+    title: "Dessert",
+    image: "https://mithiyaj.com/byculla/wp-content/uploads/sites/3/2025/01/1259960057"
+  },
+  {
+    title: "Coffee",
+    image: "https://media.cnn.com/api/v1/images/stellar/prod/150929101049-black-coffee-stock.jpg?q=w_3000,h_3074,x_0,y_0,c_fill"
+  }
+]
+
+
+
+export { data, carouselImages, slots, discount, cuisine }
