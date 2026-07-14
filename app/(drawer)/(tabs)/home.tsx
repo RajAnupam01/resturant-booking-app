@@ -144,33 +144,6 @@ const Home = () => {
     );
   };
 
-  const renderRecentlyViewedItem = ({ item }: { item: Restaurant }) => {
-    return (
-      <TouchableOpacity
-        className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden flex-row p-2 w-72 mr-4 items-center"
-        onPress={() => handleRestaurantClick(item)}
-      >
-        <Image
-          source={{ uri: item.image }}
-          className="w-16 h-16 rounded-lg object-cover"
-        />
-        <View className="flex-1 ml-3 justify-center">
-          <Text className="text-white text-sm font-bold mb-0.5" numberOfLines={1}>
-            {item.name}
-          </Text>
-          <Text className="text-gray-400 text-xs mb-1" numberOfLines={1}>
-            {item.address}
-          </Text>
-          <View className="bg-emerald-500/10 self-start px-2 py-0.5 rounded">
-            <Text className="text-emerald-400 text-[10px] font-medium">
-              ★ Quick View
-            </Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
   const renderDiscountItem = ({ item }: { item: Discount }) => {
     return (
       <View className="w-72 h-40 mr-4 rounded-xl overflow-hidden bg-gray-900 shadow-md">
@@ -209,7 +182,7 @@ const Home = () => {
         bounces={false}
         overScrollMode="never"
       >
-        {/* Navigation Bar */}
+        
         <View style={{ backgroundColor: Colors.SECONDARY }} className="pb-3 z-50">
           <View className="flex items-center mt-3">
             <View className="border border-gray-700 bg-gray-900 flex-row px-3 py-2 w-11/12 rounded-xl shadow-lg justify-between items-center">
@@ -221,7 +194,7 @@ const Home = () => {
           </View>
         </View>
 
-        {/* Welcome Banner */}
+        
         <View className="w-full px-4 items-center mb-2">
           <ImageBackground
             className="h-48 w-full items-center justify-center overflow-hidden rounded-xl"
@@ -232,7 +205,7 @@ const Home = () => {
           </ImageBackground>
         </View>
 
-        {/* Special Offers Section */}
+       
         {discount.length > 0 && (
           <>
             <View className="p-4 pt-4">
@@ -253,7 +226,7 @@ const Home = () => {
           </>
         )}
 
-        {/* Restaurants Section */}
+      
         <View className="p-4 pt-4">
           <Text className="text-white text-xl font-bold">Our Restaurants</Text>
         </View>
@@ -267,7 +240,7 @@ const Home = () => {
           keyExtractor={(item, index) => loading ? `skeleton-${index}` : item.id}
         />
 
-        {/* Cuisines Section */}
+       
         {cuisine.length > 0 && (
           <>
             <View className="p-4 pt-4">
@@ -288,21 +261,39 @@ const Home = () => {
           </>
         )}
 
-        {/* Recently Viewed Section */}
+       
         {authUser && restaurant.length > 0 && recentlyViewed.length > 0 && (
           <>
             <View className="p-4 pt-4">
               <Text className="text-white text-xl font-bold">Recently Viewed</Text>
             </View>
-            <FlatList
-              data={recentlyViewed}
-              renderItem={renderRecentlyViewedItem}
-              horizontal
-              contentContainerStyle={{ paddingLeft: 16, paddingRight: 0 }}
-              showsHorizontalScrollIndicator={false}
-              nestedScrollEnabled={true}
-              keyExtractor={(item) => `recent-${item.id}`}
-            />
+            <View className="px-4">
+              {recentlyViewed.map((item) => (
+                <TouchableOpacity
+                  key={`recent-${item.id}`}
+                  className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden flex-row p-2 w-full mb-3 items-center"
+                  onPress={() => handleRestaurantClick(item)}
+                >
+                  <Image
+                    source={{ uri: item.image }}
+                    className="w-16 h-16 rounded-lg object-cover"
+                  />
+                  <View className="flex-1 ml-3 justify-center">
+                    <Text className="text-white text-sm font-bold mb-0.5" numberOfLines={1}>
+                      {item.name}
+                    </Text>
+                    <Text className="text-gray-400 text-xs mb-1" numberOfLines={1}>
+                      {item.address}
+                    </Text>
+                    <View className="bg-emerald-500/10 self-start px-2 py-0.5 rounded">
+                      <Text className="text-emerald-400 text-[10px] font-medium">
+                        ★ Quick View
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
           </>
         )}
         

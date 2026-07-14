@@ -59,15 +59,15 @@ const RestaurantDetails = () => {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-white p-4">
+    <SafeAreaView className="flex-1 bg-black p-4">
       <ScrollView>
         <Image source={{ uri: restaurant.image }} className="w-full h-64 rounded-xl mb-4" />
-        <Text className="text-3xl font-extrabold text-gray-900">{restaurant.name}</Text>
-        <Text className="text-md text-gray-500 mt-2">{restaurant.address}</Text>
-        <Text className="text-sm text-gray-700 mt-4">
+        <Text className="text-3xl font-extrabold text-white">{restaurant.name}</Text>
+        <Text className="text-md text-white mt-2">{restaurant.address}</Text>
+        <Text className="text-sm text-white mt-4">
           Available Capacity: {restaurant.seats} seats
         </Text>
-        <Text className="text-sm text-gray-700 mt-1">
+        <Text className="text-sm text-gray-white mt-1">
           Hours: {restaurant.opening} - {restaurant.closing}
         </Text>
         <Booking />
