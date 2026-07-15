@@ -1,5 +1,6 @@
 import { useUser } from "@/context/userContext";
 import React, { useState } from "react";
+import { Calendar } from 'react-native-calendars';
 import {
     Alert,
     Text,
@@ -7,13 +8,22 @@ import {
     View,
 } from "react-native";
 
-const Booking = () => {
+interface BookingProps {
+    restaurantId: string;
+    restaurantName: string;
+    availableSeats: number;
+    availableSlots: string[];
+}
+
+const Booking = ({ restaurantId, restaurantName, availableSeats, availableSlots }: BookingProps) => {
     const { isGuest } = useUser();
-    const [guests, setGuests] = useState(2);
 
-    const bookingDate = "20 July 2026";
-    const bookingTime = "7:00 PM";
+    // 1. Core State Architecture Setup
+    const [people, setPeople] = useState(2);
+    const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+    const [slot, setSlot] = useState<string | null>(null);
 
+    // 2. Dynamic Form Validation and Submission Logic
     const handleBooking = () => {
         if (isGuest) {
             Alert.alert(
@@ -23,10 +33,27 @@ const Booking = () => {
             return;
         }
 
+        // Safety block: prevent confirming if a time slot hasn't been chosen yet
+        if (!slot) {
+            Alert.alert(
+                "Time Slot Required",
+                "Please pick a preferred time slot before confirming your table."
+            );
+            return;
+        }
+
+        // Output confirmation using the live state data values selected by the user
         Alert.alert(
             "Booking Confirmed 🎉",
-            `Your table for ${guests} guest(s) has been reserved on ${bookingDate} at ${bookingTime}.`
+            `Your table for ${people} guest(s) at ${restaurantName} has been reserved on ${date} at ${slot}.`
         );
+    };
+
+    // 3. Simple Bounding Helper for Calendar Limits
+    const getFutureCutOffDates = () => {
+        const today = new Date();
+        today.setDate(today.getDate() + 6);
+        return today.toISOString().split('T')[0];
     };
 
     return (
@@ -35,40 +62,72 @@ const Booking = () => {
                 Book a Table
             </Text>
 
-            {/* Date */}
-            <View className="mb-4">
-                <Text className="text-gray-400">Date</Text>
-                <View className="bg-neutral-800 rounded-xl p-3 mt-1">
-                    <Text className="text-white">{bookingDate}</Text>
+            {/* Date Picker Selection Component */}
+            <Calendar
+                minDate={new Date().toISOString().split('T')[0]}
+                maxDate={getFutureCutOffDates()}
+                markedDates={{
+                    [date]: { selected: true, selectedColor: '#fbbf24', selectedTextColor: '#000000' }
+                }}
+                onDayPress={(day) => {
+                    setDate(day.dateString); // Updates state to 'YYYY-MM-DD' layout string
+                }}
+                theme={{
+                    backgroundColor: '#171717',
+                    calendarBackground: '#262626',
+                    dayTextColor: '#ffffff',
+                    todayTextColor: '#fbbf24',
+                    arrowColor: '#fbbf24',
+                    monthTextColor: '#ffffff',
+                    textDisabledColor: '#404040',
+                }}
+            />
+
+            {/* Time Slot Selection 2x4 Layout Block */}
+            <View className="mb-4 mt-4">
+                <Text className="text-gray-400 mb-2">Select Time Slot</Text>
+
+                <View className="flex-row flex-wrap justify-between">
+                    {availableSlots && availableSlots.map((timeOption) => {
+                        const isSelected = timeOption === slot;
+
+                        return (
+                            <TouchableOpacity
+                                key={timeOption}
+                                onPress={() => setSlot(timeOption)}
+                                className={`w-[23%] mb-2 py-3 rounded-xl border items-center justify-center ${
+                                    isSelected
+                                        ? "bg-amber-400 border-amber-400"
+                                        : "bg-neutral-800 border-neutral-700"
+                                }`}
+                            >
+                                <Text className={`font-semibold text-sm ${isSelected ? "text-black" : "text-white"}`}>
+                                    {timeOption}
+                                </Text>
+                            </TouchableOpacity>
+                        );
+                    })}
                 </View>
             </View>
 
-            {/* Time */}
-            <View className="mb-4">
-                <Text className="text-gray-400">Time</Text>
-                <View className="bg-neutral-800 rounded-xl p-3 mt-1">
-                    <Text className="text-white">{bookingTime}</Text>
-                </View>
-            </View>
-
-            {/* Guests */}
+            {/* Guests Counter Component */}
             <View className="mb-6">
                 <Text className="text-gray-400 mb-2">Guests</Text>
 
                 <View className="flex-row items-center justify-between bg-neutral-800 rounded-xl p-3">
                     <TouchableOpacity
-                        onPress={() => guests > 1 && setGuests(guests - 1)}
+                        onPress={() => people > 1 && setPeople(people - 1)}
                         className="bg-amber-400 rounded-full w-10 h-10 items-center justify-center"
                     >
                         <Text className="text-black text-xl font-bold">−</Text>
                     </TouchableOpacity>
 
                     <Text className="text-white text-lg font-bold">
-                        {guests}
+                        {people}
                     </Text>
 
                     <TouchableOpacity
-                        onPress={() => setGuests(guests + 1)}
+                        onPress={() => setPeople(people + 1)}
                         className="bg-amber-400 rounded-full w-10 h-10 items-center justify-center"
                     >
                         <Text className="text-black text-xl font-bold">+</Text>
@@ -76,6 +135,7 @@ const Booking = () => {
                 </View>
             </View>
 
+            {/* Action Trigger Button */}
             <TouchableOpacity
                 onPress={handleBooking}
                 className="bg-amber-400 rounded-xl p-4"

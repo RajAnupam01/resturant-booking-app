@@ -2,6 +2,7 @@ import React from 'react'
 import { Tabs } from 'expo-router';
 import { Colors } from '@/constants/Color';
 import { Ionicons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const TabsLayout = () => {
   return (
@@ -31,10 +32,10 @@ const TabsLayout = () => {
           <Ionicons name="time" size={24} color={color} />
         )
       }} />
-      <Tabs.Screen name="profile" options={{
-        title: "Profile",
+      <Tabs.Screen name="explore" options={{
+        title: "Explore",
         tabBarIcon: ({ color }) => (
-          <Ionicons name="person-sharp" size={24} color={color} />
+          <MaterialIcons name="travel-explore" size={24} color={color} />
         )
       }} />
     </Tabs>
