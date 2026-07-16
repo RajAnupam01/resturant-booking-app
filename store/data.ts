@@ -7,6 +7,7 @@ export interface Restaurant {
   address: string;
   opening: string;
   closing: string;
+  price:number
 }
 export interface Discount {
   id: string,

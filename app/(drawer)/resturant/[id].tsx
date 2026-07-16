@@ -61,9 +61,9 @@ const RestaurantDetails = () => {
 
   if (isLoading) {
     return (
-      <SafeAreaView className="flex-1 bg-white justify-center items-center">
+      <SafeAreaView className="flex-1 bg-black justify-center items-center">
         <ActivityIndicator size="large" color="#000000" />
-        <Text className="text-gray-500 mt-4 font-medium">Fetching details...</Text>
+        <Text className="text-white mt-4 font-medium">Fetching details...</Text>
       </SafeAreaView>
     );
   }
@@ -79,19 +79,23 @@ const RestaurantDetails = () => {
   return (
     <SafeAreaView className="flex-1 bg-black p-4">
       <ScrollView>
-        <Image source={{ uri: restaurant.image }} className="w-full h-64 rounded-xl mb-4" />
-        <Text className="text-3xl font-extrabold text-white">{restaurant.name}</Text>
-        <Text className="text-md text-white mt-2">{restaurant.address}</Text>
-        <Text className="text-sm text-white mt-4">
+        <Image source={{ uri: restaurant.image }} className="w-full h-64 rounded-xl mb-4 " />
+        <Text className="text-3xl ml-4 font-extrabold text-white">{restaurant.name}</Text>
+        <Text className="text-md ml-4 text-white mt-2">{restaurant.address}</Text>
+        <Text className="text-sm ml-4 text-white mt-4">
           Available Capacity: {restaurant.seats} seats
         </Text>
-        <Text className="text-sm text-gray-white mt-1">
+        <Text className="text-sm ml-4 text-white mt-4">
+          Price Per Person: ₹ {restaurant.price} 
+        </Text>
+        <Text className="text-sm ml-4 text-white mt-4">
           Hours: {restaurant.opening} - {restaurant.closing}
         </Text>
         <Booking
           restaurantId={restaurant.id}
           restaurantName={restaurant.name}
           availableSeats={restaurant.seats}
+          tablePrice={restaurant.price}
           availableSlots={slots}
         />
       </ScrollView>

@@ -7,23 +7,24 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
+import { router } from "expo-router";
 
 interface BookingProps {
     restaurantId: string;
     restaurantName: string;
     availableSeats: number;
+    tablePrice:number;
     availableSlots: string[];
 }
 
-const Booking = ({ restaurantId, restaurantName, availableSeats, availableSlots }: BookingProps) => {
+const Booking = ({ restaurantId, restaurantName, availableSeats, availableSlots,tablePrice }: BookingProps) => {
     const { isGuest } = useUser();
 
-    // 1. Core State Architecture Setup
     const [people, setPeople] = useState(2);
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
     const [slot, setSlot] = useState<string | null>(null);
 
-    // 2. Dynamic Form Validation and Submission Logic
+
     const handleBooking = () => {
         if (isGuest) {
             Alert.alert(
@@ -33,7 +34,6 @@ const Booking = ({ restaurantId, restaurantName, availableSeats, availableSlots 
             return;
         }
 
-        // Safety block: prevent confirming if a time slot hasn't been chosen yet
         if (!slot) {
             Alert.alert(
                 "Time Slot Required",
@@ -42,11 +42,17 @@ const Booking = ({ restaurantId, restaurantName, availableSeats, availableSlots 
             return;
         }
 
-        // Output confirmation using the live state data values selected by the user
-        Alert.alert(
-            "Booking Confirmed 🎉",
-            `Your table for ${people} guest(s) at ${restaurantName} has been reserved on ${date} at ${slot}.`
-        );
+        router.push({
+            pathname: "/checkout", 
+            params: {
+                restaurantId,
+                restaurantName,
+                guests: people.toString(),
+                date,
+                tablePrice,
+                timeSlot: slot,
+            }
+        });
     };
 
     // 3. Simple Bounding Helper for Calendar Limits
@@ -95,11 +101,10 @@ const Booking = ({ restaurantId, restaurantName, availableSeats, availableSlots 
                             <TouchableOpacity
                                 key={timeOption}
                                 onPress={() => setSlot(timeOption)}
-                                className={`w-[23%] mb-2 py-3 rounded-xl border items-center justify-center ${
-                                    isSelected
+                                className={`w-[23%] mb-2 py-3 rounded-xl border items-center justify-center ${isSelected
                                         ? "bg-amber-400 border-amber-400"
                                         : "bg-neutral-800 border-neutral-700"
-                                }`}
+                                    }`}
                             >
                                 <Text className={`font-semibold text-sm ${isSelected ? "text-black" : "text-white"}`}>
                                     {timeOption}
@@ -141,7 +146,7 @@ const Booking = ({ restaurantId, restaurantName, availableSeats, availableSlots 
                 className="bg-amber-400 rounded-xl p-4"
             >
                 <Text className="text-center text-black font-bold text-base">
-                    Confirm Booking
+                    Proceed to Checkout
                 </Text>
             </TouchableOpacity>
         </View>

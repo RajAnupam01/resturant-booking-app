@@ -7,7 +7,7 @@ import { useUser } from '@/context/userContext';
 
 function CustomDrawerContent(props: any) {
 
-  const { logout,profile} = useUser()
+  const { logout, profile } = useUser()
 
   const handleShare = async () => {
     try {
@@ -81,11 +81,15 @@ export default function DrawerLayout() {
           // Adjusted style to use Tailwind utility classes
           <Pressable
             onPress={() => router.back()}
-            className="ml-[15px]"
+            className="ml-4"
           >
-            <Ionicons name="arrow-back" size={24} color="black" />
+            <Ionicons name="arrow-back" size={24} color="white" />
           </Pressable>
         ),
+        headerLeftContainerStyle: {
+          paddingLeft: 10,
+          paddingRight: 40, // Adds space between arrow and title
+        },
       }}
     >
       <Drawer.Screen
@@ -102,7 +106,9 @@ export default function DrawerLayout() {
         options={{
           drawerItemStyle: { display: 'none' },
           title: 'Restaurant Details',
-          headerShown: true
+          headerShown: true,
+          headerStyle: { backgroundColor: '#0a0a0a' },
+          headerTintColor: '#ffffff',
         }}
       />
       <Drawer.Screen
@@ -111,6 +117,8 @@ export default function DrawerLayout() {
           drawerLabel: 'About',
           title: 'About',
           headerShown: true,
+          headerStyle: { backgroundColor: '#0a0a0a' },
+          headerTintColor: '#ffffff',
           drawerIcon: ({ color, size }) => <Ionicons name="information-circle-outline" size={size} color={color} />
         }}
       />
@@ -120,6 +128,8 @@ export default function DrawerLayout() {
           drawerLabel: 'Contact',
           title: 'Contact',
           headerShown: true,
+          headerStyle: { backgroundColor: '#0a0a0a' },
+          headerTintColor: '#ffffff',
           drawerIcon: ({ color, size }) => <Ionicons name="mail-outline" size={size} color={color} />
         }}
       />
