@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView, ImageBackground, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, Image, ScrollView, ImageBackground, FlatList, TouchableOpacity, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/constants/Color';
@@ -76,6 +76,33 @@ const Home = () => {
       console.log("Error loading History", error)
     }
   }
+  const clearRecentlyViewed = async () => {
+    Alert.alert(
+      "Clear History",
+      "Are you sure you want to remove all recently viewed restaurants?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Clear",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              setRecentlyViewed([]);
+
+              await AsyncStorage.removeItem(
+                `recently_viewed_${authUser?.uid}`
+              );
+            } catch (error) {
+              console.log("Error clearing history", error);
+            }
+          },
+        },
+      ]
+    );
+  };
 
   useEffect(() => {
     const initFetch = async () => {
@@ -182,7 +209,7 @@ const Home = () => {
         bounces={false}
         overScrollMode="never"
       >
-        
+
         <View style={{ backgroundColor: Colors.SECONDARY }} className="pb-3 z-50">
           <View className="flex items-center mt-3">
             <View className="border border-gray-700 bg-gray-900 flex-row px-3 py-2 w-11/12 rounded-xl shadow-lg justify-between items-center">
@@ -194,7 +221,7 @@ const Home = () => {
           </View>
         </View>
 
-        
+
         <View className="w-full px-4 items-center mb-2">
           <ImageBackground
             className="h-48 w-full items-center justify-center overflow-hidden rounded-xl"
@@ -205,7 +232,7 @@ const Home = () => {
           </ImageBackground>
         </View>
 
-       
+
         {discount.length > 0 && (
           <>
             <View className="p-4 pt-4">
@@ -226,7 +253,7 @@ const Home = () => {
           </>
         )}
 
-      
+
         <View className="p-4 pt-4">
           <Text className="text-white text-xl font-bold">Our Restaurants</Text>
         </View>
@@ -240,7 +267,7 @@ const Home = () => {
           keyExtractor={(item, index) => loading ? `skeleton-${index}` : item.id}
         />
 
-       
+
         {cuisine.length > 0 && (
           <>
             <View className="p-4 pt-4">
@@ -261,46 +288,52 @@ const Home = () => {
           </>
         )}
 
-       
+
         {authUser && restaurant.length > 0 && recentlyViewed.length > 0 && (
           <>
-            <View className="p-4 pt-4">
-              <Text className="text-white text-xl font-bold">Recently Viewed</Text>
+            <View className="p-4 mt-2 pt-4 flex-row justify-between items-center">
+              <Text className="text-white text-xl font-bold">
+                Recently Viewed
+              </Text>
+
+              <TouchableOpacity onPress={clearRecentlyViewed}>
+                <Text className="text-red-400 text-sm font-semibold">
+                  Clear All
+                </Text>
+              </TouchableOpacity>
             </View>
-            <View className="px-4">
-              {recentlyViewed.map((item) => (
-                <TouchableOpacity
-                  key={`recent-${item.id}`}
-                  className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden flex-row p-2 w-full mb-3 items-center"
-                  onPress={() => handleRestaurantClick(item)}
-                >
-                  <Image
-                    source={{ uri: item.image }}
-                    className="w-16 h-16 rounded-lg object-cover"
-                  />
-                  <View className="flex-1 ml-3 justify-center">
-                    <Text className="text-white text-sm font-bold mb-0.5" numberOfLines={1}>
-                      {item.name}
+            {recentlyViewed.map((item) => (
+              <TouchableOpacity
+                key={`recent-${item.id}`}
+                className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden flex-row p-2 w-full mb-3 items-center"
+                onPress={() => handleRestaurantClick(item)}
+              >
+                <Image
+                  source={{ uri: item.image }}
+                  className="w-16 h-16 rounded-lg object-cover"
+                />
+                <View className="flex-1 ml-3 justify-center">
+                  <Text className="text-white text-sm font-bold mb-0.5" numberOfLines={1}>
+                    {item.name}
+                  </Text>
+                  <Text className="text-gray-400 text-xs mb-1" numberOfLines={1}>
+                    {item.address}
+                  </Text>
+                  <View className="bg-emerald-500/10 self-start px-2 py-0.5 rounded">
+                    <Text className="text-emerald-400 text-[10px] font-medium">
+                      ★ Quick View
                     </Text>
-                    <Text className="text-gray-400 text-xs mb-1" numberOfLines={1}>
-                      {item.address}
-                    </Text>
-                    <View className="bg-emerald-500/10 self-start px-2 py-0.5 rounded">
-                      <Text className="text-emerald-400 text-[10px] font-medium">
-                        ★ Quick View
-                      </Text>
-                    </View>
                   </View>
-                </TouchableOpacity>
-              ))}
-            </View>
+                </View>
+              </TouchableOpacity>
+            ))}
           </>
         )}
-        
+
         {/* Bottom spacer for nested ScrollView padding */}
         <View className="h-8" />
       </ScrollView>
-    </SafeAreaView>
+    </SafeAreaView >
   );
 };
 

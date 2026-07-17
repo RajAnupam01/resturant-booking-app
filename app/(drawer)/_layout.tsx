@@ -7,7 +7,7 @@ import { useUser } from '@/context/userContext';
 
 function CustomDrawerContent(props: any) {
 
-  const { logout, profile } = useUser()
+  const { logout, profile, isGuest } = useUser()
 
   const handleShare = async () => {
     try {
@@ -23,16 +23,30 @@ function CustomDrawerContent(props: any) {
     Alert.alert('Rate Us', 'Redirecting to App Store / Play Store...');
   };
 
-  const handleLogout = () => {
-    Alert.alert('Logout', 'Are you sure you want to log out?', [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Logout', onPress: async () => {
-          await logout();
-          router.replace("/");
+  const handleLogout = async () => {
+    if (isGuest) {
+      await logout();
+      router.replace("/");
+      return;
+    }
+
+    Alert.alert(
+      "Logout",
+      "Are you sure you want to log out?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
         },
-      },
-    ]);
+        {
+          text: "Logout",
+          onPress: async () => {
+            await logout();
+            router.replace("/");
+          },
+        },
+      ]
+    );
   };
 
   return (
@@ -64,7 +78,7 @@ function CustomDrawerContent(props: any) {
 
           <Pressable className="flex-row items-center py-3 mt-1" onPress={handleLogout}>
             <Ionicons name="log-out-outline" size={20} color="#ff4444" />
-            <Text className="text-[15px] ml-4 text-red-500 font-semibold">Logout</Text>
+            <Text className="text-[15px] ml-4 text-red-500 font-semibold">{isGuest ? "Log in" : "Logout"}</Text>
           </Pressable>
         </View>
       </DrawerContentScrollView>

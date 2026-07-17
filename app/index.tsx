@@ -47,8 +47,8 @@ export default function Index() {
           </View>
           <View className="mt-8 w-3/4  ">
             <Text className="text-center text-base font-semibold my-4 text-white">
-              <View className="border-b-2 border-[#FFD700] p-2 mb-1 w-[120]" /> or{" "}
-              <View className="border-b-2 border-[#FFD700] p-2 mb-1 w-[120]" />
+              <View className="border-b-2 border-[#FFD700] p-2 mb-1 w-[45%]" /> or{" "}
+              <View className="border-b-2 border-[#FFD700] p-2 mb-1 w-[45%]" />
             </Text>
             <TouchableOpacity
               onPress={() => {

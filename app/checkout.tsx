@@ -16,7 +16,7 @@ const CheckoutScreen = () => {
     // Destructure passed parameters
     const { restaurantId, restaurantName, guests, date, timeSlot, tablePrice } = params;
 
-  
+
     const guestCount = parseInt(guests as string, 10) || 1;
     const pricePerTable = parseFloat(tablePrice as string) || 10.00;
     const bookingFee = 15.00;
@@ -47,7 +47,14 @@ const CheckoutScreen = () => {
             Alert.alert(
                 "Booking Confirmed 🎉",
                 "Your payment was successful and your table is booked!",
-                [{ text: "Awesome", onPress: () => router.dismissAll() }] // Back to home/details
+                [
+                    {
+                        text: "Awesome",
+                        onPress: () => {
+                            router.back(); 
+                        },
+                    },
+                ]
             );
 
         } catch (error) {
@@ -103,7 +110,7 @@ const CheckoutScreen = () => {
             {/* Bottom Pay Button */}
             <TouchableOpacity
                 disabled={isProcessing}
-                onPress={()=>setIsModalVisible(true)}
+                onPress={() => setIsModalVisible(true)}
                 className="bg-amber-400 rounded-xl p-4 mb-24"
             >
                 {isProcessing ? (
@@ -116,13 +123,13 @@ const CheckoutScreen = () => {
             </TouchableOpacity>
 
             <PaymentModal
-            visible={isModalVisible}
-            amount={totalCost}
-            onClose={()=>setIsModalVisible(false)}
-            onConfirm={()=>{
-                setIsModalVisible(false);
-                handlePaymentAndConfirm();
-            }}
+                visible={isModalVisible}
+                amount={totalCost}
+                onClose={() => setIsModalVisible(false)}
+                onConfirm={() => {
+                    setIsModalVisible(false);
+                    handlePaymentAndConfirm();
+                }}
             />
         </View>
     );

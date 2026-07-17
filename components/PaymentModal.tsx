@@ -24,13 +24,48 @@ const PaymentModal = ({ visible, onClose, onConfirm, amount }: PaymentModalProps
     setExpiry(cleanText);
   };
 
-  const handlePay = () => {
-    // Simple simulation logic
-    if (card.length === 12 && expiry.length === 5) {
-      onConfirm();
-    } else {
-      Alert.alert("Invalid Details", "Please enter valid card info to pay.");
+  const isValidExpiry = (expiry: string) => {
+    const [monthStr, yearStr] = expiry.split("/");
+
+    if (!monthStr || !yearStr) return false;
+
+    const month = Number(monthStr);
+    const year = 2000 + Number(yearStr);
+
+    // Month must be 1-12
+    if (month < 1 || month > 12) return false;
+
+    // Maximum supported year
+    if (year > 2031) return false;
+
+    const today = new Date();
+    const currentMonth = today.getMonth() + 1;
+    const currentYear = today.getFullYear();
+    if (
+      year < currentYear ||
+      (year === currentYear && month < currentMonth)
+    ) {
+      return false;
     }
+
+    return true;
+  };
+
+
+
+  const handlePay = () => {
+    if (card.length !== 12) {
+      Alert.alert("Invalid Card", "Please enter a valid 12-digit card number.");
+      return;
+    }
+    if (!isValidExpiry(expiry)) {
+      Alert.alert(
+        "Invalid Expiry",
+        "Please enter a valid expiry date between 01/25 and 12/31."
+      );
+      return;
+    }
+    onConfirm();
   };
 
   return (

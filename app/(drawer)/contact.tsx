@@ -1,103 +1,139 @@
-import { View, Text, ScrollView, TextInput, TouchableOpacity, Linking, Alert, StatusBar } from 'react-native'
-import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { Colors } from '@/constants/Color'
-import { Ionicons } from '@expo/vector-icons'
+import {
+  View,
+  Text,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+  Linking,
+  Alert,
+  StatusBar,
+} from "react-native";
+import React, { useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Colors } from "@/constants/Color";
+import { Ionicons } from "@expo/vector-icons";
 
 const Contact = () => {
-  const [subject, setSubject] = useState('')
-  const [message, setMessage] = useState('')
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleSupportEmail = () => {
     if (!subject || !message) {
-      Alert.alert('Missing Info', 'Please fill out both the subject and your message.')
-      return
+      Alert.alert(
+        "Missing Information",
+        "Please enter both a subject and message."
+      );
+      return;
     }
 
-    // Explicit production email scheme
-    const emailUrl = `mailto:support@tableio.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`
+    const emailUrl = `mailto:support@tableio.com?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(message)}`;
 
-    Linking.canOpenURL(emailUrl)
-      .then((supported) => {
-        if (supported) {
-          Linking.openURL(emailUrl)
-        } else {
-          Alert.alert('Error', 'Could not open default mail client application.')
-        }
-      })
-      .catch((err) => console.error('Error handling email link:', err))
-  }
+    Linking.openURL(emailUrl);
+  };
 
   return (
     <SafeAreaView style={{ backgroundColor: Colors.SECONDARY, flex: 1 }}>
-      <ScrollView showsVerticalScrollIndicator={false} className="px-4" keyboardShouldPersistTaps="handled">
+      <StatusBar barStyle="light-content" backgroundColor="#000000" />
 
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{ padding: 16, paddingBottom: 32 }}
+      >
         {/* Header */}
-        <View className="mt-6 mb-8">
-          <Text className="text-white text-2xl font-extrabold">Help & Support</Text>
-          <Text className="text-gray-400 text-xs mt-1">Facing booking issues? Reach out to our Delhi response unit.</Text>
+
+        <View className="mb-6">
+          <Text className="text-white text-3xl font-extrabold">
+            Help & Support
+          </Text>
+
+          <Text className="text-gray-400 text-sm mt-2 leading-6">
+            Need assistance with reservations, payments, or bookings? We're
+            always happy to help.
+          </Text>
         </View>
 
-        {/* Direct Contact Methods Channels */}
+        {/* Contact Options */}
+
         <View className="flex-row justify-between mb-6">
           <TouchableOpacity
-            onPress={() => Linking.openURL('mailto:support@tableio.com')}
-            className="bg-gray-900 border border-gray-800 w-[48%] p-4 rounded-xl items-center justify-center shadow-md"
+            className="bg-neutral-900 border border-neutral-800 rounded-3xl w-[48%] p-5 items-center"
+            onPress={() => Linking.openURL("mailto:support@tableio.com")}
           >
-            <Ionicons name="mail" size={24} color="#34d399" />
-            <Text className="text-white font-bold text-xs mt-2">Email Support</Text>
-            <Text className="text-gray-500 text-[10px] mt-0.5">support@tableio.com</Text>
+            <Ionicons name="mail" size={28} color="#34d399" />
+
+            <Text className="text-white font-bold text-sm mt-3">
+              Email Support
+            </Text>
+
+            <Text className="text-gray-400 text-xs mt-1">
+              support@tableio.com
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => Linking.openURL('tel:+911140000000')} // Mocked classic Delhi Landline template
-            className="bg-gray-900 border border-gray-800 w-[48%] p-4 rounded-xl items-center justify-center shadow-md"
+            className="bg-neutral-900 border border-neutral-800 rounded-3xl w-[48%] p-5 items-center"
+            onPress={() => Linking.openURL("tel:+911140000000")}
           >
-            <Ionicons name="call" size={24} color="#34d399" />
-            <Text className="text-white font-bold text-xs mt-2">Call Center</Text>
-            <Text className="text-gray-500 text-[10px] mt-0.5">011-4000-0000</Text>
+            <Ionicons name="call" size={28} color="#34d399" />
+
+            <Text className="text-white font-bold text-sm mt-3">
+              Call Support
+            </Text>
+
+            <Text className="text-gray-400 text-xs mt-1">
+              011-4000-0000
+            </Text>
           </TouchableOpacity>
         </View>
 
-        {/* Interactive Message Ticket Form */}
-        <View className="bg-gray-900 border border-gray-800 rounded-xl p-4 mb-6">
-          <Text className="text-white font-bold text-base mb-4">Send a Ticket</Text>
+        {/* Ticket */}
 
-          {/* Subject Field Input */}
-          <Text className="text-gray-400 text-xs font-semibold mb-1.5">Subject</Text>
+        <View className="bg-neutral-900 border border-neutral-800 rounded-3xl p-5">
+          <Text className="text-white text-xl font-bold mb-5">
+            Send a Support Ticket
+          </Text>
+
+          <Text className="text-gray-300 text-sm font-semibold mb-2">
+            Subject
+          </Text>
+
           <TextInput
-            placeholder="e.g., Booking modification, Payment error..."
-            placeholderTextColor="#4b5563"
             value={subject}
             onChangeText={setSubject}
-            className="bg-gray-950 text-white rounded-lg px-3 py-2.5 text-sm border border-gray-850 mb-4"
+            placeholder="Booking issue, refund, payment..."
+            placeholderTextColor="#6b7280"
+            className="bg-neutral-950 border border-neutral-800 rounded-2xl px-4 py-4 text-base text-white mb-5"
           />
 
-          {/* Message Field Input */}
-          <Text className="text-gray-400 text-xs font-semibold mb-1.5">Your Message</Text>
+          <Text className="text-gray-300 text-sm font-semibold mb-2">
+            Message
+          </Text>
+
           <TextInput
-            placeholder="Describe your issue in detail (Include Restaurant Name / Order ID if applicable)..."
-            placeholderTextColor="#4b5563"
             value={message}
             onChangeText={setMessage}
             multiline
-            numberOfLines={5}
             textAlignVertical="top"
-            className="bg-gray-950 text-white rounded-lg px-3 py-2.5 text-sm border border-gray-850 mb-5 h-32"
+            placeholder="Tell us how we can help..."
+            placeholderTextColor="#6b7280"
+            className="bg-neutral-950 border border-neutral-800 rounded-2xl px-4 py-4 h-40 text-base text-white mb-6"
           />
 
-          {/* Action Button */}
           <TouchableOpacity
             onPress={handleSupportEmail}
-            className="bg-emerald-500 py-3 rounded-xl items-center justify-center shadow-md active:bg-emerald-600"
+            className="bg-emerald-500 rounded-2xl py-4 items-center"
           >
-            <Text className="text-gray-950 font-bold text-sm">Launch Support Mail</Text>
+            <Text className="text-black text-base font-bold">
+              Send Email
+            </Text>
           </TouchableOpacity>
         </View>
-        <StatusBar barStyle={"light-content"} backgroundColor={'#000000'} />
       </ScrollView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default Contact
+export default Contact;
