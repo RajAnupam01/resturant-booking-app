@@ -74,7 +74,7 @@ const Explore = () => {
   const [selectedLine, setSelectedLine] = useState<string | null>(null);
 
   return (
-    <SafeAreaView
+    <SafeAreaView  edges={["top"]}
       style={{ backgroundColor: Colors.SECONDARY, flex: 1 }}
     >
       <ScrollView

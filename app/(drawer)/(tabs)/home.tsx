@@ -202,12 +202,15 @@ const Home = () => {
   };
 
   return (
-    <SafeAreaView style={{ backgroundColor: Colors.SECONDARY, flex: 1 }} >
+    <SafeAreaView  edges={["top"]} style={{ backgroundColor: Colors.SECONDARY, flex: 1 }} >
       <ScrollView
         stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}
         bounces={false}
         overScrollMode="never"
+        contentContainerStyle={{
+          paddingBottom: 50,
+        }}
       >
 
         <View style={{ backgroundColor: Colors.SECONDARY }} className="pb-3 z-50">
@@ -291,7 +294,7 @@ const Home = () => {
 
         {authUser && restaurant.length > 0 && recentlyViewed.length > 0 && (
           <>
-            <View className="p-4 mt-2 pt-4 flex-row justify-between items-center">
+            <View className="p-4 mt-4 pt-4 flex-row justify-between items-center">
               <Text className="text-white text-xl font-bold">
                 Recently Viewed
               </Text>
@@ -330,8 +333,7 @@ const Home = () => {
           </>
         )}
 
-        {/* Bottom spacer for nested ScrollView padding */}
-        <View className="h-8" />
+
       </ScrollView>
     </SafeAreaView >
   );

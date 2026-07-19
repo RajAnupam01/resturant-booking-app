@@ -5,6 +5,7 @@ import { collection, query, where, getDocs, doc, deleteDoc } from "firebase/fire
 import { db } from "@/config/firebaseConfig";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import Foundation from '@expo/vector-icons/Foundation';
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type Booking = {
   id: string;
@@ -105,77 +106,94 @@ const History = () => {
 
   if (isGuest) {
     return (
-      <View className="flex-1 items-center justify-center bg-neutral-950 p-6">
-        <Text className="text-white text-lg text-center">Please sign in to view your booking history.</Text>
-      </View>
+      <SafeAreaView
+        edges={["top"]}
+        style={{ flex: 1, backgroundColor: "#0a0a0a" }}
+      >
+        <View className="flex-1 items-center justify-center p-6">
+          <Text className="text-white text-lg text-center">
+            Please sign in to view your booking history.
+          </Text>
+        </View>
+      </SafeAreaView>
     );
   }
 
   if (loading) {
     return (
-      <View className="flex-1 justify-center items-center bg-neutral-950">
-        <ActivityIndicator size="large" color="#fbbf24" />
-      </View>
+      <SafeAreaView
+        edges={["top"]}
+        style={{ flex: 1, backgroundColor: "#0a0a0a" }}
+      >
+        <View className="flex-1 justify-center items-center">
+          <ActivityIndicator size="large" color="#fbbf24" />
+        </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <FlatList
-      className="bg-neutral-950"
-      contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
-      data={bookings}
-      keyExtractor={(item) => item.id}
-      ListEmptyComponent={
-        <Text className="text-gray-500 text-center mt-20">No bookings found.</Text>
-      }
-      refreshing={refreshing}
-      onRefresh={handleRefresh}
-      renderItem={({ item }) => (
-        <Swipeable
-          renderRightActions={() => renderRightActions(item.id)}
-        >
-          <View className="bg-neutral-900 border border-neutral-800 rounded-3xl p-5 mb-4 shadow-sm">
+    <SafeAreaView
+      edges={["top"]}
+      style={{ flex: 1, backgroundColor: "#0a0a0a" }} // or Colors.SECONDARY
+    >
+      <FlatList
+        className="bg-neutral-950"
+        contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+        data={bookings}
+        keyExtractor={(item) => item.id}
+        ListEmptyComponent={
+          <Text className="text-gray-500 text-center mt-20">No bookings found.</Text>
+        }
+        refreshing={refreshing}
+        onRefresh={handleRefresh}
+        renderItem={({ item }) => (
+          <Swipeable
+            renderRightActions={() => renderRightActions(item.id)}
+          >
+            <View className="bg-neutral-900 border border-neutral-800 rounded-3xl p-5 mb-4 shadow-sm">
 
-            {/* Header Section */}
-            <View className="flex-row justify-between items-start mb-3">
-              <Text className="text-amber-400 text-xl font-bold flex-1" numberOfLines={1}>
-                {item.restaurantName}
-              </Text>
-              <View className="bg-green-500/10 px-3 py-1 rounded-full">
-                <Text className="text-green-400 text-xs font-bold uppercase tracking-wider">
-                  {item.paymentStatus}
+              {/* Header Section */}
+              <View className="flex-row justify-between items-start mb-3">
+                <Text className="text-amber-400 text-xl font-bold flex-1" numberOfLines={1}>
+                  {item.restaurantName}
                 </Text>
+                <View className="bg-green-500/10 px-3 py-1 rounded-full">
+                  <Text className="text-green-400 text-xs font-bold uppercase tracking-wider">
+                    {item.paymentStatus}
+                  </Text>
+                </View>
               </View>
+
+              {/* Details Grid */}
+              <View className="flex-row justify-between border-t border-neutral-800 pt-3 mt-1">
+                <View>
+                  <Text className="text-gray-400 text-xs uppercase tracking-widest mb-1">Date</Text>
+                  <Text className="text-white font-medium">📅 {item.date}</Text>
+                </View>
+                <View>
+                  <Text className="text-gray-400 text-xs uppercase tracking-widest mb-1">Time</Text>
+                  <Text className="text-white font-medium">🕒 {item.timeSlot}</Text>
+                </View>
+              </View>
+
+              <View className="flex-row justify-between mt-4">
+                <View>
+                  <Text className="text-gray-400 text-xs uppercase tracking-widest mb-1">Guests</Text>
+                  <Text className="text-white font-semibold">👥 {item.guests} People</Text>
+                </View>
+                <View className="items-end">
+                  <Text className="text-gray-400 text-xs uppercase tracking-widest mb-1">Total</Text>
+                  <Text className="text-white font-bold text-lg">₹{item.amountPaid}</Text>
+                </View>
+              </View>
+
             </View>
+          </Swipeable>
 
-            {/* Details Grid */}
-            <View className="flex-row justify-between border-t border-neutral-800 pt-3 mt-1">
-              <View>
-                <Text className="text-gray-400 text-xs uppercase tracking-widest mb-1">Date</Text>
-                <Text className="text-white font-medium">📅 {item.date}</Text>
-              </View>
-              <View>
-                <Text className="text-gray-400 text-xs uppercase tracking-widest mb-1">Time</Text>
-                <Text className="text-white font-medium">🕒 {item.timeSlot}</Text>
-              </View>
-            </View>
-
-            <View className="flex-row justify-between mt-4">
-              <View>
-                <Text className="text-gray-400 text-xs uppercase tracking-widest mb-1">Guests</Text>
-                <Text className="text-white font-semibold">👥 {item.guests} People</Text>
-              </View>
-              <View className="items-end">
-                <Text className="text-gray-400 text-xs uppercase tracking-widest mb-1">Total</Text>
-                <Text className="text-white font-bold text-lg">₹{item.amountPaid}</Text>
-              </View>
-            </View>
-
-          </View>
-        </Swipeable>
-
-      )}
-    />
+        )}
+      />
+    </SafeAreaView>
   );
 };
 

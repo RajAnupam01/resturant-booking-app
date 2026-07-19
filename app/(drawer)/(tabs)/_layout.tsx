@@ -3,8 +3,10 @@ import { Tabs } from 'expo-router';
 import { Colors } from '@/constants/Color';
 import { Ionicons } from '@expo/vector-icons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const TabsLayout = () => {
+  const insets = useSafeAreaInsets(); // Get dynamic device padding
   return (
     <Tabs screenOptions={{
       headerShown: false,
@@ -12,12 +14,14 @@ const TabsLayout = () => {
       tabBarInactiveTintColor: Colors.dark.text,
       tabBarStyle: {
         backgroundColor: Colors.SECONDARY,
-        paddingBottom: 14,
-        height: 75
+        height: 60 + insets.bottom, 
+        paddingBottom: insets.bottom,
+
       },
       tabBarLabelStyle: {
         fontSize: 12,
-        fontWeight: "bold"
+        fontWeight: "bold",
+        marginBottom: 5,
       }
     }} >
       <Tabs.Screen name="home" options={{

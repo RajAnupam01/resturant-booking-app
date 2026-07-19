@@ -22,6 +22,7 @@ const CheckoutScreen = () => {
     const bookingFee = 15.00;
     const totalCostNumeric = (guestCount * pricePerTable) + bookingFee;
     const totalCost = totalCostNumeric.toFixed(2);
+    const [success, setSuccess] = useState(false);
 
     const handlePaymentAndConfirm = async () => {
         try {
@@ -44,18 +45,11 @@ const CheckoutScreen = () => {
 
             await addDoc(collection(db, "bookings"), bookingData);
 
-            Alert.alert(
-                "Booking Confirmed 🎉",
-                "Your payment was successful and your table is booked!",
-                [
-                    {
-                        text: "Awesome",
-                        onPress: () => {
-                            router.back(); 
-                        },
-                    },
-                ]
-            );
+            setSuccess(true);
+
+            setTimeout(() => {
+                router.back();
+            }, 2000);
 
         } catch (error) {
             console.error("Error during checkout: ", error);
@@ -64,6 +58,22 @@ const CheckoutScreen = () => {
             setIsProcessing(false);
         }
     };
+
+    if (success) {
+        return (
+            <View className="flex-1 bg-neutral-950 justify-center items-center">
+                <Text className="text-7xl">✅</Text>
+
+                <Text className="text-white text-2xl font-bold mt-4">
+                    Payment Successful
+                </Text>
+
+                <Text className="text-gray-400 mt-2">
+                    Your booking has been confirmed.
+                </Text>
+            </View>
+        );
+    }
 
     return (
         <View className="flex-1 bg-neutral-950 p-6 justify-between">

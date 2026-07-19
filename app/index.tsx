@@ -4,7 +4,6 @@ import { router } from "expo-router";
 import { Image, Animated, ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useUser } from "@/context/userContext";
-import { ActivityIndicator } from "react-native";
 import { useEffect } from "react";
 
 export default function Index() {
@@ -16,8 +15,8 @@ export default function Index() {
       router.replace("/(drawer)/(tabs)/home");
     }
   }, [authUser, isGuest, loading]);
-  
-  if (loading || authUser || isGuest ) {
+
+  if (loading || authUser || isGuest) {
     return (
       <SafeAreaView
         style={{
@@ -27,7 +26,14 @@ export default function Index() {
           alignItems: "center",
         }}
       >
-        <ActivityIndicator size="large" color="#FFD700" />
+        <Image
+          source={require("../assets/images/mainLogo.png")}
+          style={{
+            width: 300,
+            height: 280,
+            resizeMode: "contain",
+          }}
+        />
       </SafeAreaView>
     );
   }

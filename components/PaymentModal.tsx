@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { Modal, View, Text, TextInput, TouchableOpacity, Alert, Image } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform
+} from "react-native";
 
 interface PaymentModalProps {
   visible: boolean;
@@ -70,6 +74,10 @@ const PaymentModal = ({ visible, onClose, onConfirm, amount }: PaymentModalProps
 
   return (
     <Modal visible={visible} animationType="slide" transparent={true}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
       <View className="flex-1 justify-end bg-black/50">
         <View className="bg-white p-6 rounded-t-3xl h-[65%]">
           <TouchableOpacity onPress={onClose} className="mr-2" >
@@ -122,6 +130,7 @@ const PaymentModal = ({ visible, onClose, onConfirm, amount }: PaymentModalProps
           </TouchableOpacity>
         </View>
       </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 };
