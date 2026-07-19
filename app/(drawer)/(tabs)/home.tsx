@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DrawerActions } from '@react-navigation/native';
 import { Restaurant, Discount, Cuisine } from "../../../store/data"
 import { collection, getDocs, query } from 'firebase/firestore';
-import { db } from "../../../config/firebaseConfig"
+import { db } from "@/config/firebaseConfig";
 import { useUser } from '@/context/userContext';
 
 const Home = () => {
