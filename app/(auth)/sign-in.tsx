@@ -2,7 +2,7 @@ import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { signinSchema, signinFormData } from "../../validations/authSchema"
 import { router } from "expo-router";
-import {  ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View, ActivityIndicator } from "react-native";
+import {  ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View, ActivityIndicator, KeyboardAvoidingView, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/config/firebaseConfig";
@@ -41,6 +41,10 @@ const Signin = () => {
 
     <SafeAreaView style={{ flex: 1, backgroundColor: '#090A0A' }}>
       <StatusBar barStyle="light-content" backgroundColor="#090A0A" />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
 
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
@@ -132,6 +136,7 @@ const Signin = () => {
         </View>
 
       </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   )
 }

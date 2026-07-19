@@ -9,7 +9,7 @@ export default function RootLayout() {
 
   return (
     <UserProvider>
-      <View style={{ flex: 1}}>
+      <View style={{ flex: 1 }}>
         {/* Offline Banner */}
         {netInfo.isConnected === false && (
           <View style={styles.offlineBanner}>
@@ -21,7 +21,7 @@ export default function RootLayout() {
 
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="index" />
-          <Stack.Screen name="(drawer)"/>
+          <Stack.Screen name="(drawer)" />
           <Stack.Screen name="(auth)" />
           <Stack.Screen
             name="checkout"
@@ -33,6 +33,8 @@ export default function RootLayout() {
               headerTintColor: '#ffffff',
             }}
           />
+          <Stack.Screen
+            name="payment-success" />
         </Stack>
       </View>
     </UserProvider>

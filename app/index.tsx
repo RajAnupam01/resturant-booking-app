@@ -29,8 +29,8 @@ export default function Index() {
         <Image
           source={require("../assets/images/mainLogo.png")}
           style={{
-            width: 300,
-            height: 280,
+            width: 200,
+            height: 200, // or let the aspect ratio determine the height
             resizeMode: "contain",
           }}
         />

@@ -13,11 +13,11 @@ interface BookingProps {
     restaurantId: string;
     restaurantName: string;
     availableSeats: number;
-    tablePrice:number;
+    tablePrice: number;
     availableSlots: string[];
 }
 
-const Booking = ({ restaurantId, restaurantName, availableSeats, availableSlots,tablePrice }: BookingProps) => {
+const Booking = ({ restaurantId, restaurantName, availableSeats, availableSlots, tablePrice }: BookingProps) => {
     const { isGuest } = useUser();
 
     const [people, setPeople] = useState(2);
@@ -43,7 +43,7 @@ const Booking = ({ restaurantId, restaurantName, availableSeats, availableSlots,
         }
 
         router.push({
-            pathname: "/checkout", 
+            pathname: "/checkout",
             params: {
                 restaurantId,
                 restaurantName,
@@ -102,8 +102,8 @@ const Booking = ({ restaurantId, restaurantName, availableSeats, availableSlots,
                                 key={timeOption}
                                 onPress={() => setSlot(timeOption)}
                                 className={`w-[23%] mb-2 py-3 rounded-xl border items-center justify-center ${isSelected
-                                        ? "bg-amber-400 border-amber-400"
-                                        : "bg-neutral-800 border-neutral-700"
+                                    ? "bg-amber-400 border-amber-400"
+                                    : "bg-neutral-800 border-neutral-700"
                                     }`}
                             >
                                 <Text className={`font-semibold text-sm ${isSelected ? "text-black" : "text-white"}`}>
@@ -132,7 +132,7 @@ const Booking = ({ restaurantId, restaurantName, availableSeats, availableSlots,
                     </Text>
 
                     <TouchableOpacity
-                        onPress={() => setPeople(people + 1)}
+                        onPress={() => people < 14 && setPeople(people + 1)}
                         className="bg-amber-400 rounded-full w-10 h-10 items-center justify-center"
                     >
                         <Text className="text-black text-xl font-bold">+</Text>
