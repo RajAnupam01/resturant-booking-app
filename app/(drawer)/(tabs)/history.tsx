@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, ActivityIndicator, Alert, TouchableOpacity } from "react-native";
 import { useUser } from "@/context/userContext";
 import { collection, query, where, getDocs, doc, deleteDoc } from "firebase/firestore";
-import { db } from "@/config/firebaseConfig";
+import {db} from "../../../config/firebaseConfig"
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import Foundation from '@expo/vector-icons/Foundation';
 
